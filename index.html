@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "ProposalPilot",
+      "url": "https://atalovesyou.github.io/proposalpilot/",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "description": "AI proposal generator for freelancers",
+      "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+      },
+      "publisher": {
+            "@type": "Organization",
+            "name": "OpenSphere Labs",
+            "url": "https://atalovesyou.github.io/opensphere-labs/"
+      }
+}
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProposalPilot — AI Proposals for Freelancers</title>
+    <meta name="description" content="Generate professional proposals in 90 seconds. AI-powered writing, pricing suggestions, and PDF export for freelancers. Free to start.">
+    <meta property="og:title" content="ProposalPilot — AI Proposals for Freelancers">
+    <meta property="og:description" content="Describe your project → get a client-ready proposal. AI pricing suggestions. PDF export. $0-9/mo.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ProposalPilot — AI Proposals for Freelancers">
+    <meta name="twitter:description" content="AI proposal generation, pricing suggestions, and PDF export for freelancers. 90 seconds to a winning proposal.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-text { background: linear-gradient(135deg, #818cf8, #a78bfa, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .glass { background: rgba(255,255,255,0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.08); }
+        .glow { box-shadow: 0 0 40px rgba(129,140,248,0.15); }
+        .typing-cursor { animation: blink 1s step-end infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.4s ease-out; }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+        .slide-in { animation: slideIn 0.3s ease-out; }
+        .tab-active { background: rgba(99,102,241,0.2); border-color: rgba(99,102,241,0.5); color: #a5b4fc; }
+        .toggle-on { background: #6366f1; }
+        .toggle-off { background: #374151; }
+    </style>
+</head>
+<body class="bg-[#0a0a0f] text-gray-200 antialiased">
+
+    <!-- Nav -->
+    <nav class="fixed top-0 w-full z-50 bg-[#0a0a0f]/80 backdrop-blur-lg border-b border-white/5">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="text-2xl">📄</span>
+                <span class="text-xl font-bold">Proposal<span class="text-indigo-400">Pilot</span></span>
+            </div>
+            <div class="hidden md:flex items-center gap-8 text-sm text-gray-400">
+                <a href="#demo" class="hover:text-white transition">Demo</a>
+                <a href="#templates" class="hover:text-white transition">Templates</a>
+                <a href="#pricing-tool" class="hover:text-white transition">AI Pricing</a>
+                <a href="#pricing" class="hover:text-white transition">Plans</a>
+            </div>
+            <button onclick="document.getElementById('waitlist-section').scrollIntoView({behavior:'smooth'})" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                Join Waitlist
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="pt-32 pb-20 px-6">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/20 rounded-full px-4 py-1.5 text-sm text-indigo-300 mb-6">
+                <span class="w-2 h-2 bg-indigo-400 rounded-full animate-pulse"></span>
+                Write + Price + Export — One Click
+            </div>
+            <h1 class="text-5xl md:text-6xl font-extrabold leading-tight mb-6">
+                Win more deals with<br>
+                <span class="gradient-text">AI proposals in 90 seconds</span>
+            </h1>
+            <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-8">
+                Describe your project → get a client-ready proposal with scope, timeline, and pricing. AI suggests what to charge. Export as PDF. Free to start.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <button onclick="document.getElementById('demo').scrollIntoView({behavior:'smooth'})" class="bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-3.5 rounded-xl text-lg font-semibold transition shadow-lg shadow-indigo-500/25">
+                    Try the Demo →
+                </button>
+                <button onclick="document.getElementById('templates').scrollIntoView({behavior:'smooth'})" class="glass text-gray-300 hover:text-white px-8 py-3.5 rounded-xl text-lg font-medium transition">
+                    See Templates
+                </button>
+            </div>
+            <div class="mt-12 flex flex-wrap items-center justify-center gap-8 text-sm text-gray-500">
+                <div class="flex items-center gap-2"><span class="text-green-400">✓</span> No writing needed</div>
+                <div class="flex items-center gap-2"><span class="text-green-400">✓</span> AI-powered pricing</div>
+                <div class="flex items-center gap-2"><span class="text-green-400">✓</span> PDF export</div>
+                <div class="flex items-center gap-2"><span class="text-green-400">✓</span> Free tier forever</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pain Points -->
+    <section class="py-16 px-6">
+        <div class="max-w-5xl mx-auto grid md:grid-cols-3 gap-6">
+            <div class="glass rounded-2xl p-6 text-center">
+                <div class="text-4xl mb-3">💸</div>
+                <h3 class="font-bold text-lg mb-2">Hours Wasted Writing</h3>
+                <p class="text-gray-400 text-sm">Freelancers spend 2-4 hours per proposal. At $100/hr, that's $200-400 in lost billable time per deal.</p>
+            </div>
+            <div class="glass rounded-2xl p-6 text-center">
+                <div class="text-4xl mb-3">📉</div>
+                <h3 class="font-bold text-lg mb-2">Deals Lost to Weak Proposals</h3>
+                <p class="text-gray-400 text-sm">30-40% of freelance deals die because the proposal was generic, unstructured, or unprofessional compared to agencies.</p>
+            </div>
+            <div class="glass rounded-2xl p-6 text-center">
+                <div class="text-4xl mb-3">🤷</div>
+                <h3 class="font-bold text-lg mb-2">No Idea What to Charge</h3>
+                <p class="text-gray-400 text-sm">Undercharge and leave money on the table. Overcharge and lose the deal. Without market data, pricing is a guessing game.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="py-16 px-6">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-12">From blank page to <span class="gradient-text">winning proposal</span></h2>
+            <div class="grid md:grid-cols-4 gap-6">
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-indigo-600/20 rounded-xl flex items-center justify-center mx-auto mb-3 text-xl font-bold text-indigo-400">1</div>
+                    <h4 class="font-semibold mb-1">Describe</h4>
+                    <p class="text-sm text-gray-400">Tell AI about the project, client, and your expertise</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-indigo-600/20 rounded-xl flex items-center justify-center mx-auto mb-3 text-xl font-bold text-indigo-400">2</div>
+                    <h4 class="font-semibold mb-1">Generate</h4>
+                    <p class="text-sm text-gray-400">AI writes a complete proposal with scope, timeline, and pricing</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-indigo-600/20 rounded-xl flex items-center justify-center mx-auto mb-3 text-xl font-bold text-indigo-400">3</div>
+                    <h4 class="font-semibold mb-1">Customize</h4>
+                    <p class="text-sm text-gray-400">Toggle sections, adjust pricing, pick your style</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-indigo-600/20 rounded-xl flex items-center justify-center mx-auto mb-3 text-xl font-bold text-indigo-400">4</div>
+                    <h4 class="font-semibold mb-1">Send & Win</h4>
+                    <p class="text-sm text-gray-400">Export PDF, track opens with GhostTracker, close the deal</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Demo -->
+    <section id="demo" class="py-20 px-6">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-3">Try ProposalPilot <span class="gradient-text">Right Now</span></h2>
+            <p class="text-gray-400 text-center mb-10">Select a project type, describe the work, and watch AI generate your proposal</p>
+
+            <!-- Project Type Selector -->
+            <div class="grid grid-cols-3 md:grid-cols-6 gap-3 mb-6">
+                <button onclick="selectProjectType('webdev')" id="type-webdev" class="glass rounded-xl p-3 text-center hover:border-indigo-500/50 transition tab-active">
+                    <div class="text-2xl mb-1">🌐</div>
+                    <div class="text-xs font-medium">Web Dev</div>
+                </button>
+                <button onclick="selectProjectType('design')" id="type-design" class="glass rounded-xl p-3 text-center hover:border-indigo-500/50 transition">
+                    <div class="text-2xl mb-1">🎨</div>
+                    <div class="text-xs font-medium">Design</div>
+                </button>
+                <button onclick="selectProjectType('marketing')" id="type-marketing" class="glass rounded-xl p-3 text-center hover:border-indigo-500/50 transition">
+                    <div class="text-2xl mb-1">📣</div>
+                    <div class="text-xs font-medium">Marketing</div>
+                </button>
+                <button onclick="selectProjectType('video')" id="type-video" class="glass rounded-xl p-3 text-center hover:border-indigo-500/50 transition">
+                    <div class="text-2xl mb-1">🎬</div>
+                    <div class="text-xs font-medium">Video</div>
+                </button>
+                <button onclick="selectProjectType('writing')" id="type-writing" class="glass rounded-xl p-3 text-center hover:border-indigo-500/50 transition">
+                    <div class="text-2xl mb-1">✍️</div>
+                    <div class="text-xs font-medium">Writing</div>
+                </button>
+                <button onclick="selectProjectType('consulting')" id="type-consulting" class="glass rounded-xl p-3 text-center hover:border-indigo-500/50 transition">
+                    <div class="text-2xl mb-1">💼</div>
+                    <div class="text-xs font-medium">Consulting</div>
+                </button>
+            </div>
+
+            <!-- Input -->
+            <div class="glass rounded-2xl p-6 mb-4">
+                <label class="text-sm text-gray-400 mb-2 block">Describe the project (or use the pre-filled example)</label>
+                <textarea id="project-desc" rows="3" class="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:border-indigo-500/50 resize-none" placeholder="E.g., Redesign a 5-page website for a local bakery..."></textarea>
+                <div class="flex items-center justify-between mt-4">
+                    <div class="flex items-center gap-4 text-sm">
+                        <label class="flex items-center gap-2 text-gray-400">
+                            <select id="proposal-style" class="bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-sm focus:outline-none">
+                                <option value="detailed">Detailed</option>
+                                <option value="minimal">Minimal</option>
+                                <option value="executive">Executive</option>
+                            </select>
+                            Style
+                        </label>
+                    </div>
+                    <button onclick="generateProposal()" id="generate-btn" class="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-2.5 rounded-xl text-sm font-semibold transition shadow-lg shadow-indigo-500/25">
+                        ✨ Generate Proposal
+                    </button>
+                </div>
+            </div>
+
+            <!-- Smart Toggles -->
+            <div class="glass rounded-2xl p-4 mb-4">
+                <div class="text-sm font-medium text-gray-300 mb-3">Smart Toggles — adjust your proposal in real-time</div>
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <div onclick="toggleSwitch(this)" class="w-10 h-5 rounded-full toggle-off relative transition-colors cursor-pointer" data-toggle="rush">
+                            <div class="w-4 h-4 bg-white rounded-full absolute top-0.5 left-0.5 transition-transform"></div>
+                        </div>
+                        <span class="text-xs text-gray-400">Rush Fee (+25%)</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <select id="toggle-revisions" onchange="updateProposal()" class="bg-white/5 border border-white/10 rounded-lg px-2 py-1 text-xs focus:outline-none">
+                            <option value="2">2 Revisions</option>
+                            <option value="1">1 Revision</option>
+                            <option value="3">3 Revisions</option>
+                            <option value="unlimited">Unlimited</option>
+                        </select>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <select id="toggle-deposit" onchange="updateProposal()" class="bg-white/5 border border-white/10 rounded-lg px-2 py-1 text-xs focus:outline-none">
+                            <option value="50">50% Deposit</option>
+                            <option value="25">25% Deposit</option>
+                            <option value="0">No Deposit</option>
+                        </select>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <div onclick="toggleSwitch(this)" class="w-10 h-5 rounded-full toggle-off relative transition-colors cursor-pointer" data-toggle="killfee">
+                            <div class="w-4 h-4 bg-white rounded-full absolute top-0.5 left-0.5 transition-transform"></div>
+                        </div>
+                        <span class="text-xs text-gray-400">Kill Fee (20%)</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <div onclick="toggleSwitch(this)" class="w-10 h-5 rounded-full toggle-off relative transition-colors cursor-pointer" data-toggle="nda">
+                            <div class="w-4 h-4 bg-white rounded-full absolute top-0.5 left-0.5 transition-transform"></div>
+                        </div>
+                        <span class="text-xs text-gray-400">NDA Included</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Proposal Output -->
+            <div id="proposal-output" class="glass rounded-2xl p-6 glow hidden">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="text-sm font-medium text-indigo-300">Generated Proposal</div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="downloadPDF()" class="bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 px-3 py-1.5 rounded-lg text-xs font-medium transition">📥 Download PDF</button>
+                        <button onclick="copyProposal()" class="bg-white/5 hover:bg-white/10 text-gray-400 px-3 py-1.5 rounded-lg text-xs font-medium transition">📋 Copy</button>
+                    </div>
+                </div>
+                <div id="proposal-content" class="space-y-4 text-sm"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Proposal Templates -->
+    <section id="templates" class="py-20 px-6 bg-white/[0.01]">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-3">Proposal Templates for <span class="gradient-text">Every Project Type</span></h2>
+            <p class="text-gray-400 text-center mb-10">Start with a proven structure, customize with AI</p>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="glass rounded-2xl p-6 hover:border-indigo-500/30 transition">
+                    <div class="text-3xl mb-3">🌐</div>
+                    <h3 class="font-bold text-lg mb-1">Web Development</h3>
+                    <p class="text-gray-400 text-sm mb-3">Websites, web apps, e-commerce stores, redesigns. Includes tech stack, hosting, and maintenance terms.</p>
+                    <div class="text-xs text-indigo-300 mb-3">Typical range: $2,000 – $25,000</div>
+                    <button onclick="selectProjectType('webdev');document.getElementById('demo').scrollIntoView({behavior:'smooth'})" class="text-sm text-indigo-400 hover:text-indigo-300 font-medium">Use Template →</button>
+                </div>
+                <div class="glass rounded-2xl p-6 hover:border-indigo-500/30 transition">
+                    <div class="text-3xl mb-3">🎨</div>
+                    <h3 class="font-bold text-lg mb-1">Brand & Design</h3>
+                    <p class="text-gray-400 text-sm mb-3">Logos, brand identity, UI/UX design, packaging. Includes revision rounds and file deliverables.</p>
+                    <div class="text-xs text-indigo-300 mb-3">Typical range: $1,500 – $15,000</div>
+                    <button onclick="selectProjectType('design');document.getElementById('demo').scrollIntoView({behavior:'smooth'})" class="text-sm text-indigo-400 hover:text-indigo-300 font-medium">Use Template →</button>
+                </div>
+                <div class="glass rounded-2xl p-6 hover:border-indigo-500/30 transition">
+                    <div class="text-3xl mb-3">📣</div>
+                    <h3 class="font-bold text-lg mb-1">Marketing Campaign</h3>
+                    <p class="text-gray-400 text-sm mb-3">Social media, SEO, PPC, email marketing. Includes KPIs, reporting schedule, and ad spend management.</p>
+                    <div class="text-xs text-indigo-300 mb-3">Typical range: $2,000 – $10,000/mo</div>
+                    <button onclick="selectProjectType('marketing');document.getElementById('demo').scrollIntoView({behavior:'smooth'})" class="text-sm text-indigo-400 hover:text-indigo-300 font-medium">Use Template →</button>
+                </div>
+                <div class="glass rounded-2xl p-6 hover:border-indigo-500/30 transition">
+                    <div class="text-3xl mb-3">💼</div>
+                    <h3 class="font-bold text-lg mb-1">Consulting</h3>
+                    <p class="text-gray-400 text-sm mb-3">Strategy, technology, operations consulting. Includes discovery phase, deliverables, and engagement terms.</p>
+                    <div class="text-xs text-indigo-300 mb-3">Typical range: $150 – $500/hr</div>
+                    <button onclick="selectProjectType('consulting');document.getElementById('demo').scrollIntoView({behavior:'smooth'})" class="text-sm text-indigo-400 hover:text-indigo-300 font-medium">Use Template →</button>
+                </div>
+                <div class="glass rounded-2xl p-6 hover:border-indigo-500/30 transition">
+                    <div class="text-3xl mb-3">🎬</div>
+                    <h3 class="font-bold text-lg mb-1">Video Production</h3>
+                    <p class="text-gray-400 text-sm mb-3">Commercials, social content, corporate video. Includes pre/post production, equipment, and licensing.</p>
+                    <div class="text-xs text-indigo-300 mb-3">Typical range: $3,000 – $50,000</div>
+                    <button onclick="selectProjectType('video');document.getElementById('demo').scrollIntoView({behavior:'smooth'})" class="text-sm text-indigo-400 hover:text-indigo-300 font-medium">Use Template →</button>
+                </div>
+                <div class="glass rounded-2xl p-6 hover:border-indigo-500/30 transition">
+                    <div class="text-3xl mb-3">✍️</div>
+                    <h3 class="font-bold text-lg mb-1">Content Writing</h3>
+                    <p class="text-gray-400 text-sm mb-3">Blog posts, copywriting, technical docs, ghostwriting. Includes word count, research, and SEO terms.</p>
+                    <div class="text-xs text-indigo-300 mb-3">Typical range: $0.10 – $1.00/word</div>
+                    <button onclick="selectProjectType('writing');document.getElementById('demo').scrollIntoView({behavior:'smooth'})" class="text-sm text-indigo-400 hover:text-indigo-300 font-medium">Use Template →</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Pricing Tool -->
+    <section id="pricing-tool" class="py-20 px-6">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-3">AI Pricing <span class="gradient-text">Suggestions</span></h2>
+            <p class="text-gray-400 text-center mb-10">Stop guessing what to charge — let AI analyze the market for you</p>
+
+            <div class="glass rounded-2xl p-6 glow">
+                <label class="text-sm text-gray-400 mb-2 block">Describe the project you're pricing</label>
+                <div class="flex gap-3">
+                    <input id="pricing-input" type="text" class="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:border-indigo-500/50" placeholder="E.g., 5-page website redesign for a restaurant with online ordering">
+                    <button onclick="suggestPricing()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-xl text-sm font-semibold transition whitespace-nowrap">💰 Suggest Price</button>
+                </div>
+
+                <div id="pricing-result" class="mt-6 hidden">
+                    <div class="grid grid-cols-3 gap-4 mb-6">
+                        <div class="glass rounded-xl p-4 text-center">
+                            <div class="text-xs text-gray-500 mb-1">Budget-Friendly</div>
+                            <div id="price-low" class="text-2xl font-bold text-yellow-400">$3,200</div>
+                            <div class="text-xs text-gray-500 mt-1">Below market avg</div>
+                        </div>
+                        <div class="glass rounded-xl p-4 text-center border border-indigo-500/30">
+                            <div class="text-xs text-indigo-300 mb-1">✨ Recommended</div>
+                            <div id="price-market" class="text-2xl font-bold text-green-400">$5,500</div>
+                            <div class="text-xs text-gray-500 mt-1">Market rate</div>
+                        </div>
+                        <div class="glass rounded-xl p-4 text-center">
+                            <div class="text-xs text-gray-500 mb-1">Premium</div>
+                            <div id="price-premium" class="text-2xl font-bold text-purple-400">$8,800</div>
+                            <div class="text-xs text-gray-500 mt-1">Top 20% of market</div>
+                        </div>
+                    </div>
+                    <div class="glass rounded-xl p-4">
+                        <div class="text-sm font-medium text-gray-300 mb-2">💡 Pricing Intelligence</div>
+                        <div id="pricing-insights" class="text-sm text-gray-400 space-y-1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Table -->
+    <section class="py-20 px-6 bg-white/[0.01]">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-10">How ProposalPilot <span class="gradient-text">Compares</span></h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-white/10">
+                            <th class="text-left py-3 px-4 text-gray-400 font-medium">Feature</th>
+                            <th class="py-3 px-4 text-indigo-400 font-bold">ProposalPilot</th>
+                            <th class="py-3 px-4 text-gray-400 font-medium">Proposify</th>
+                            <th class="py-3 px-4 text-gray-400 font-medium">Better Proposals</th>
+                            <th class="py-3 px-4 text-gray-400 font-medium">PandaDoc</th>
+                            <th class="py-3 px-4 text-gray-400 font-medium">Google Docs</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 px-4">AI Generation</td>
+                            <td class="py-3 px-4 text-center text-green-400 font-bold">✅ Full AI</td>
+                            <td class="py-3 px-4 text-center text-yellow-400">⚠️ Templates</td>
+                            <td class="py-3 px-4 text-center text-yellow-400">⚠️ Templates</td>
+                            <td class="py-3 px-4 text-center text-yellow-400">⚠️ Basic</td>
+                            <td class="py-3 px-4 text-center text-red-400">❌ None</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 px-4">Pricing Suggestions</td>
+                            <td class="py-3 px-4 text-center text-green-400 font-bold">✅ AI Market Data</td>
+                            <td class="py-3 px-4 text-center text-red-400">❌</td>
+                            <td class="py-3 px-4 text-center text-red-400">❌</td>
+                            <td class="py-3 px-4 text-center text-red-400">❌</td>
+                            <td class="py-3 px-4 text-center text-red-400">❌</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 px-4">PDF Export</td>
+                            <td class="py-3 px-4 text-center text-green-400">✅</td>
+                            <td class="py-3 px-4 text-center text-green-400">✅</td>
+                            <td class="py-3 px-4 text-center text-green-400">✅</td>
+                            <td class="py-3 px-4 text-center text-green-400">✅</td>
+                            <td class="py-3 px-4 text-center text-green-400">✅</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 px-4">Open Tracking</td>
+                            <td class="py-3 px-4 text-center text-green-400 font-bold">✅ GhostTracker</td>
+                            <td class="py-3 px-4 text-center text-green-400">✅</td>
+                            <td class="py-3 px-4 text-center text-green-400">✅</td>
+                            <td class="py-3 px-4 text-center text-green-400">✅</td>
+                            <td class="py-3 px-4 text-center text-red-400">❌</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 px-4">Templates</td>
+                            <td class="py-3 px-4 text-center text-green-400">6 AI-Enhanced</td>
+                            <td class="py-3 px-4 text-center text-green-400">200+</td>
+                            <td class="py-3 px-4 text-center text-green-400">100+</td>
+                            <td class="py-3 px-4 text-center text-green-400">100+</td>
+                            <td class="py-3 px-4 text-center text-red-400">0</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 font-bold">Price</td>
+                            <td class="py-3 px-4 text-center text-green-400 font-bold">$0 – $29/mo</td>
+                            <td class="py-3 px-4 text-center text-red-400">$49/mo</td>
+                            <td class="py-3 px-4 text-center text-yellow-400">$19-29/mo</td>
+                            <td class="py-3 px-4 text-center text-red-400">$35-65/mo</td>
+                            <td class="py-3 px-4 text-center text-green-400">Free</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="py-20 px-6">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-3">Simple, <span class="gradient-text">Freelancer-Friendly</span> Pricing</h2>
+            <p class="text-gray-400 text-center mb-10">One proposal can pay for a year of ProposalPilot</p>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="glass rounded-2xl p-6">
+                    <div class="text-sm text-gray-500 mb-1">Free</div>
+                    <div class="text-4xl font-bold mb-1">$0<span class="text-lg text-gray-500 font-normal">/mo</span></div>
+                    <div class="text-sm text-gray-400 mb-6">Perfect for trying it out</div>
+                    <ul class="space-y-3 text-sm text-gray-300 mb-6">
+                        <li class="flex items-center gap-2"><span class="text-green-400">✓</span> 3 proposals/month</li>
+                        <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Basic templates</li>
+                        <li class="flex items-center gap-2"><span class="text-green-400">✓</span> AI pricing suggestions</li>
+                        <li class="flex items-center gap-2"><span class="text-green-400">✓</span> PDF export (watermark)</li>
+                        <li class="flex items-center gap-2 text-gray-500"><span>✗</span> Custom branding</li>
+                    </ul>
+                    <button onclick="document.getElementById('waitlist-section').scrollIntoView({behavior:'smooth'})" class="w-full glass text-gray-300 hover:text-white py-2.5 rounded-xl text-sm font-medium transition">Join Waitlist</button>
+                </div>
+                <div class="glass rounded-2xl p-6 border border-indigo-500/30 relative">
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-indigo-600 text-white text-xs px-3 py-1 rounded-full font-medium">Most Popular</div>
+                    <div class="text-sm text-indigo-300 mb-1">Pro</div>
+                    <div class="text-4xl font-bold mb-1">$9<span class="text-lg text-gray-500 font-normal">/mo</span></div>
+                    <div class="text-sm text-gray-400 mb-6">For active freelancers</div>
+                    <ul class="space-y-3 text-sm text-gray-300 mb-6">
+                        <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Unlimited proposals</li>
+                        <li class="flex items-center gap-2"><span class="text-green-400">✓</span> All 6 templates</li>
+                        <li class="flex items-center gap-2"><span class="text-green-400">✓</span> 3 proposal styles</li>
+                        <li class="flex items-center gap-2"><span class="text-green-400">✓</span> PDF export (no watermark)</li>
+                        <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Smart toggles</li>
+                    </ul>
+                    <button onclick="document.getElementById('waitlist-section').scrollIntoView({behavior:'smooth'})" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-2.5 rounded-xl text-sm font-semibold transition">Join Waitlist</button>
+                </div>
+                <div class="glass rounded-2xl p-6">
+                    <div class="text-sm text-gray-500 mb-1">Agency</div>
+                    <div class="text-4xl font-bold mb-1">$29<span class="text-lg text-gray-500 font-normal">/mo</span></div>
+                    <div class="text-sm text-gray-400 mb-6">For teams and agencies</div>
+                    <ul class="space-y-3 text-sm text-gray-300 mb-6">
+                        <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Everything in Pro</li>
+                        <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Custom branding</li>
+                        <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Team collaboration</li>
+                        <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Win/loss analytics</li>
+                        <li class="flex items-center gap-2"><span class="text-green-400">✓</span> GhostTracker integration</li>
+                    </ul>
+                    <button onclick="document.getElementById('waitlist-section').scrollIntoView({behavior:'smooth'})" class="w-full glass text-gray-300 hover:text-white py-2.5 rounded-xl text-sm font-medium transition">Join Waitlist</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cross-Promotion: Freelancer Stack -->
+    <section class="py-20 px-6 bg-white/[0.01]">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-3">Part of the <span class="gradient-text">OpenSphere Freelancer Stack</span></h2>
+            <p class="text-gray-400 text-center mb-10">One AI-powered tool for every step of your freelance business</p>
+
+            <!-- Pipeline -->
+            <div class="grid grid-cols-2 md:grid-cols-6 gap-3 mb-8">
+                <a href="https://atalovesyou.github.io/intakebot/" target="_blank" class="glass rounded-xl p-4 text-center hover:border-indigo-500/30 transition">
+                    <div class="text-2xl mb-2">🤖</div>
+                    <div class="text-xs font-bold text-gray-300">Step 1</div>
+                    <div class="text-sm font-semibold">IntakeBot</div>
+                    <div class="text-xs text-gray-500">Qualify leads</div>
+                </a>
+                <div class="glass rounded-xl p-4 text-center border border-indigo-500/30 bg-indigo-500/5">
+                    <div class="text-2xl mb-2">📄</div>
+                    <div class="text-xs font-bold text-indigo-300">Step 2</div>
+                    <div class="text-sm font-semibold text-indigo-300">ProposalPilot</div>
+                    <div class="text-xs text-indigo-400">Win the deal ← You are here</div>
+                </div>
+                <a href="https://atalovesyou.github.io/contractpilot/" target="_blank" class="glass rounded-xl p-4 text-center hover:border-indigo-500/30 transition">
+                    <div class="text-2xl mb-2">📝</div>
+                    <div class="text-xs font-bold text-gray-300">Step 3</div>
+                    <div class="text-sm font-semibold">ContractPilot</div>
+                    <div class="text-xs text-gray-500">Sign contracts</div>
+                </a>
+                <a href="https://atalovesyou.github.io/ghosttracker/" target="_blank" class="glass rounded-xl p-4 text-center hover:border-indigo-500/30 transition">
+                    <div class="text-2xl mb-2">👻</div>
+                    <div class="text-xs font-bold text-gray-300">Step 4</div>
+                    <div class="text-sm font-semibold">GhostTracker</div>
+                    <div class="text-xs text-gray-500">Track documents</div>
+                </a>
+                <a href="https://atalovesyou.github.io/invoicepilot/" target="_blank" class="glass rounded-xl p-4 text-center hover:border-indigo-500/30 transition">
+                    <div class="text-2xl mb-2">💰</div>
+                    <div class="text-xs font-bold text-gray-300">Step 5</div>
+                    <div class="text-sm font-semibold">InvoicePilot</div>
+                    <div class="text-xs text-gray-500">Get paid</div>
+                </a>
+                <a href="https://atalovesyou.github.io/reviewagent/" target="_blank" class="glass rounded-xl p-4 text-center hover:border-indigo-500/30 transition">
+                    <div class="text-2xl mb-2">⭐</div>
+                    <div class="text-xs font-bold text-gray-300">Step 6</div>
+                    <div class="text-sm font-semibold">ReviewAgent</div>
+                    <div class="text-xs text-gray-500">Get reviews</div>
+                </a>
+            </div>
+
+            <!-- Also from OpenSphere -->
+            <div class="text-center text-sm text-gray-500 mb-4">Also from OpenSphere</div>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                <a href="https://atalovesyou.github.io/unslop-ai/" target="_blank" class="glass rounded-xl p-4 text-center hover:border-indigo-500/30 transition">
+                    <div class="text-2xl mb-1">🧹</div>
+                    <div class="text-sm font-semibold">UnSlop.ai</div>
+                    <div class="text-xs text-gray-500">Kill AI slop in your writing</div>
+                </a>
+                <a href="https://atalovesyou.github.io/immigranttax-ai/" target="_blank" class="glass rounded-xl p-4 text-center hover:border-indigo-500/30 transition">
+                    <div class="text-2xl mb-1">🌍</div>
+                    <div class="text-sm font-semibold">ImmigrantTax.ai</div>
+                    <div class="text-xs text-gray-500">Multi-country tax analysis</div>
+                </a>
+                <a href="https://atalovesyou.github.io/nameforge/" target="_blank" class="glass rounded-xl p-4 text-center hover:border-indigo-500/30 transition">
+                    <div class="text-2xl mb-1">🔤</div>
+                    <div class="text-sm font-semibold">NameForge</div>
+                    <div class="text-xs text-gray-500">AI business name generator</div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Waitlist -->
+    <section id="waitlist-section" class="py-20 px-6">
+        <div class="max-w-lg mx-auto text-center">
+            <h2 class="text-3xl font-bold mb-3">Get Early Access</h2>
+            <p class="text-gray-400 mb-6">Join the waitlist and be first to win more deals with AI proposals</p>
+            <div class="flex gap-3">
+                <input id="waitlist-email" type="email" class="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:border-indigo-500/50" placeholder="your@email.com">
+                <button onclick="joinWaitlist()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-xl text-sm font-semibold transition whitespace-nowrap">Join Waitlist</button>
+            </div>
+            <div id="waitlist-msg" class="mt-3 text-sm hidden"></div>
+            <div class="mt-4 text-xs text-gray-600">
+                <span id="waitlist-count">0</span> people already on the waitlist
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 px-6 border-t border-white/5">
+        <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between text-sm text-gray-500">
+            <div class="flex items-center gap-2 mb-4 md:mb-0">
+                <span>📄</span>
+                <span>© 2026 ProposalPilot — An <a href="https://atalovesyou.github.io/opensphere-labs/" target="_blank" class="text-indigo-400 hover:text-indigo-300">OpenSphere Labs</a> Product</span>
+            </div>
+            <div class="flex items-center gap-6">
+                <a href="https://atalovesyou.github.io/opensphere-labs/" target="_blank" class="hover:text-white transition">All Products</a>
+                <a href="#demo" class="hover:text-white transition">Demo</a>
+                <a href="#pricing" class="hover:text-white transition">Pricing</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    // ============ DATA ============
+    const projectData = {
+        webdev: {
+            name: 'Web Development',
+            desc: 'Redesign a 5-page website for a local bakery with online ordering, mobile-responsive design, and SEO optimization. They currently have an outdated WordPress site.',
+            client: 'Sweet Crumbs Bakery',
+            scope: [
+                'Discovery & strategy session (2 hours)',
+                'Wireframes for all 5 pages (Home, Menu, About, Order Online, Contact)',
+                'Custom responsive design with brand colors and typography',
+                'Online ordering system with Stripe/Square integration',
+                'SEO optimization (meta tags, schema markup, sitemap)',
+                'Mobile-first responsive development',
+                'Content migration from existing WordPress site',
+                'Browser testing (Chrome, Safari, Firefox, Edge)',
+                'Training session on content management (1 hour)',
+                '30-day post-launch support'
+            ],
+            timeline: [
+                { phase: 'Discovery & Wireframes', duration: 'Week 1', deliverable: 'Sitemap + wireframes' },
+                { phase: 'Visual Design', duration: 'Week 2', deliverable: 'Design mockups (2 rounds)' },
+                { phase: 'Development', duration: 'Weeks 3-4', deliverable: 'Functional website' },
+                { phase: 'Testing & Launch', duration: 'Week 5', deliverable: 'Live site + training' }
+            ],
+            pricing: [
+                { item: 'Discovery & Strategy', amount: 400 },
+                { item: 'UX/UI Design (5 pages)', amount: 1500 },
+                { item: 'Frontend Development', amount: 2000 },
+                { item: 'Online Ordering Integration', amount: 800 },
+                { item: 'SEO Optimization', amount: 400 },
+                { item: 'Content Migration', amount: 300 },
+                { item: 'Testing & QA', amount: 300 },
+                { item: 'Training Session', amount: 200 }
+            ],
+            marketPrices: { low: 3200, market: 5900, premium: 9500 }
+        },
+        design: {
+            name: 'Brand Design',
+            desc: 'Complete brand identity package for a fintech startup — logo, color palette, typography, business cards, social media templates, and brand guidelines document.',
+            client: 'NovaPay Financial',
+            scope: [
+                'Brand discovery workshop (2 hours)',
+                'Competitive visual audit (5 competitors)',
+                'Mood board and direction concepts (3 options)',
+                'Primary logo design with 3 initial concepts',
+                'Logo variations (horizontal, stacked, icon-only)',
+                'Color palette (primary, secondary, accent, neutral)',
+                'Typography system (headings + body)',
+                'Business card design (front + back)',
+                'Social media templates (LinkedIn, Twitter, Instagram)',
+                'Brand guidelines document (24-page PDF)'
+            ],
+            timeline: [
+                { phase: 'Discovery & Research', duration: 'Week 1', deliverable: 'Mood boards + brief' },
+                { phase: 'Logo Concepts', duration: 'Week 2', deliverable: '3 logo directions' },
+                { phase: 'Refinement', duration: 'Week 3', deliverable: 'Final logo + variations' },
+                { phase: 'Brand System', duration: 'Week 4', deliverable: 'Full brand kit + guidelines' }
+            ],
+            pricing: [
+                { item: 'Brand Discovery Workshop', amount: 500 },
+                { item: 'Logo Design (3 concepts + refinement)', amount: 2500 },
+                { item: 'Logo Variations Package', amount: 500 },
+                { item: 'Color & Typography System', amount: 600 },
+                { item: 'Business Card Design', amount: 300 },
+                { item: 'Social Media Templates (3 platforms)', amount: 900 },
+                { item: 'Brand Guidelines Document', amount: 1200 }
+            ],
+            marketPrices: { low: 3500, market: 6500, premium: 12000 }
+        },
+        marketing: {
+            name: 'Marketing Campaign',
+            desc: 'Launch a 3-month digital marketing campaign for a SaaS product — content strategy, social media management, email nurture sequences, and paid ad management (Google + LinkedIn).',
+            client: 'CloudSync Pro',
+            scope: [
+                'Marketing audit and competitor analysis',
+                'Content strategy document with editorial calendar',
+                '12 blog posts (1,500+ words, SEO-optimized)',
+                'Social media management (LinkedIn + Twitter, 5x/week)',
+                '3 email nurture sequences (5 emails each)',
+                'Google Ads campaign setup and management',
+                'LinkedIn Ads campaign setup and management',
+                'Monthly analytics reports with insights',
+                'Bi-weekly strategy calls',
+                'Landing page copy for 2 campaigns'
+            ],
+            timeline: [
+                { phase: 'Audit & Strategy', duration: 'Week 1-2', deliverable: 'Strategy doc + calendar' },
+                { phase: 'Content Production', duration: 'Month 1', deliverable: 'First 4 blogs + social launch' },
+                { phase: 'Campaign Optimization', duration: 'Month 2', deliverable: 'Ad optimization + email sequences' },
+                { phase: 'Scale & Report', duration: 'Month 3', deliverable: 'Full report + recommendations' }
+            ],
+            pricing: [
+                { item: 'Marketing Audit & Strategy', amount: 1500 },
+                { item: 'Content Creation (12 blogs)', amount: 4800 },
+                { item: 'Social Media Management (3 mo)', amount: 3000 },
+                { item: 'Email Nurture Sequences', amount: 1500 },
+                { item: 'Google Ads Management (3 mo)', amount: 2400 },
+                { item: 'LinkedIn Ads Management (3 mo)', amount: 2400 },
+                { item: 'Monthly Reporting & Calls', amount: 900 }
+            ],
+            marketPrices: { low: 8000, market: 16500, premium: 28000 }
+        },
+        video: {
+            name: 'Video Production',
+            desc: 'Produce a 60-second brand video for a tech startup\'s homepage and social media — scripting, filming, editing, motion graphics, and music licensing.',
+            client: 'Quantum Labs',
+            scope: [
+                'Creative brief and concept development',
+                'Script writing (60-second narrative)',
+                'Storyboard (12-16 frames)',
+                'Location scouting and setup',
+                'Full-day shoot with 2-person crew',
+                'Professional lighting and audio capture',
+                'Video editing and color grading',
+                'Motion graphics and title animations',
+                'Licensed background music',
+                'Deliverables: 60s hero + 30s social cut + 15s teaser'
+            ],
+            timeline: [
+                { phase: 'Pre-Production', duration: 'Week 1', deliverable: 'Script + storyboard' },
+                { phase: 'Production', duration: 'Week 2', deliverable: 'Raw footage' },
+                { phase: 'Post-Production', duration: 'Week 3-4', deliverable: 'Edited video + revisions' },
+                { phase: 'Delivery', duration: 'Week 5', deliverable: 'Final cuts (3 versions)' }
+            ],
+            pricing: [
+                { item: 'Creative Concept & Script', amount: 1200 },
+                { item: 'Storyboard', amount: 600 },
+                { item: 'Production Day (crew + equipment)', amount: 3500 },
+                { item: 'Video Editing & Color Grading', amount: 2000 },
+                { item: 'Motion Graphics & Titles', amount: 1500 },
+                { item: 'Music Licensing', amount: 300 },
+                { item: 'Social Media Cuts (30s + 15s)', amount: 800 }
+            ],
+            marketPrices: { low: 5000, market: 9900, premium: 18000 }
+        },
+        writing: {
+            name: 'Content Writing',
+            desc: 'Write a 10-article content series for a B2B SaaS blog — SEO-optimized, research-backed, with internal linking strategy and meta descriptions.',
+            client: 'DataFlow Analytics',
+            scope: [
+                'Content audit of existing blog',
+                'Keyword research and topic clustering',
+                'Editorial calendar with 10 topics',
+                '10 long-form articles (1,500-2,000 words each)',
+                'SEO optimization (keywords, headers, meta descriptions)',
+                'Internal linking strategy',
+                'Custom graphics brief for each article',
+                '1 round of revisions per article',
+                'CMS publishing (WordPress/Ghost)',
+                'Performance tracking setup (GA4)'
+            ],
+            timeline: [
+                { phase: 'Research & Planning', duration: 'Week 1', deliverable: 'Keyword map + calendar' },
+                { phase: 'Writing Batch 1', duration: 'Week 2-3', deliverable: '5 articles' },
+                { phase: 'Writing Batch 2', duration: 'Week 4-5', deliverable: '5 articles' },
+                { phase: 'Revisions & Publishing', duration: 'Week 6', deliverable: 'All 10 live' }
+            ],
+            pricing: [
+                { item: 'Content Audit & Strategy', amount: 800 },
+                { item: 'Keyword Research & Topic Clustering', amount: 500 },
+                { item: '10 Long-Form Articles', amount: 5000 },
+                { item: 'SEO Optimization (all articles)', amount: 500 },
+                { item: 'Internal Linking Strategy', amount: 200 },
+                { item: 'CMS Publishing', amount: 300 },
+                { item: 'Performance Tracking Setup', amount: 200 }
+            ],
+            marketPrices: { low: 4000, market: 7500, premium: 12000 }
+        },
+        consulting: {
+            name: 'Technology Consulting',
+            desc: 'AI implementation strategy for a mid-size e-commerce company — assessment of current tech stack, AI opportunity mapping, vendor evaluation, and implementation roadmap.',
+            client: 'ShopSmart Retail',
+            scope: [
+                'Current state assessment (tech stack, data, processes)',
+                'Stakeholder interviews (5 department heads)',
+                'AI opportunity mapping across departments',
+                'Vendor evaluation matrix (top 10 AI tools)',
+                'ROI analysis for top 3 opportunities',
+                'Implementation roadmap (12-month phased)',
+                'Change management recommendations',
+                'Executive presentation deck',
+                'Detailed written report (30+ pages)',
+                '2 follow-up advisory sessions'
+            ],
+            timeline: [
+                { phase: 'Discovery', duration: 'Week 1-2', deliverable: 'Assessment report' },
+                { phase: 'Analysis', duration: 'Week 3-4', deliverable: 'Opportunity map + vendor eval' },
+                { phase: 'Strategy', duration: 'Week 5-6', deliverable: 'Roadmap + ROI analysis' },
+                { phase: 'Delivery', duration: 'Week 7', deliverable: 'Final report + presentation' }
+            ],
+            pricing: [
+                { item: 'Discovery & Assessment (16 hrs)', amount: 4800 },
+                { item: 'Stakeholder Interviews', amount: 1500 },
+                { item: 'AI Opportunity Mapping', amount: 2500 },
+                { item: 'Vendor Evaluation Matrix', amount: 2000 },
+                { item: 'ROI Analysis', amount: 1500 },
+                { item: 'Implementation Roadmap', amount: 3000 },
+                { item: 'Executive Report & Presentation', amount: 2000 },
+                { item: 'Follow-Up Advisory (2 sessions)', amount: 1200 }
+            ],
+            marketPrices: { low: 10000, market: 18500, premium: 35000 }
+        }
+    };
+
+    let currentType = 'webdev';
+    let toggleStates = { rush: false, killfee: false, nda: false };
+    let proposalGenerated = false;
+
+    // ============ PROJECT TYPE SELECTION ============
+    function selectProjectType(type) {
+        currentType = type;
+        document.querySelectorAll('[id^="type-"]').forEach(el => el.classList.remove('tab-active'));
+        document.getElementById('type-' + type).classList.add('tab-active');
+        document.getElementById('project-desc').value = projectData[type].desc;
+        if (proposalGenerated) generateProposal();
+    }
+
+    // ============ TOGGLE SWITCH ============
+    function toggleSwitch(el) {
+        const key = el.dataset.toggle;
+        toggleStates[key] = !toggleStates[key];
+        if (toggleStates[key]) {
+            el.classList.remove('toggle-off');
+            el.classList.add('toggle-on');
+            el.querySelector('div').style.transform = 'translateX(20px)';
+        } else {
+            el.classList.remove('toggle-on');
+            el.classList.add('toggle-off');
+            el.querySelector('div').style.transform = 'translateX(0)';
+        }
+        if (proposalGenerated) updateProposal();
+    }
+
+    // ============ GENERATE PROPOSAL ============
+    function generateProposal() {
+        proposalGenerated = true;
+        const data = projectData[currentType];
+        const output = document.getElementById('proposal-output');
+        const content = document.getElementById('proposal-content');
+        output.classList.remove('hidden');
+        content.innerHTML = '<div class="text-center py-8"><div class="animate-spin w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full mx-auto"></div><div class="text-sm text-gray-500 mt-3">Generating proposal...</div></div>';
+
+        setTimeout(() => {
+            buildProposal(data, content);
+            output.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 1200);
+    }
+
+    function buildProposal(data, container) {
+        const revisions = document.getElementById('toggle-revisions').value;
+        const deposit = document.getElementById('toggle-deposit').value;
+        let subtotal = data.pricing.reduce((sum, item) => sum + item.amount, 0);
+        let rushMultiplier = toggleStates.rush ? 1.25 : 1;
+        let total = Math.round(subtotal * rushMultiplier);
+        let tax = Math.round(total * 0.13);
+        let depositAmount = Math.round((total + tax) * (parseInt(deposit) / 100));
+
+        let html = '';
+
+        // Header
+        html += `<div class="border-b border-white/10 pb-4 slide-in">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-xl font-bold text-white">${data.name} Proposal</h3>
+                    <div class="text-sm text-gray-400">Prepared for <span class="text-indigo-300">${data.client}</span></div>
+                </div>
+                <div class="text-right text-sm text-gray-500">
+                    <div>${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</div>
+                    <div>Valid for 30 days</div>
+                </div>
+            </div>
+        </div>`;
+
+        // Project Overview
+        html += `<div class="slide-in">
+            <h4 class="text-sm font-bold text-indigo-300 uppercase tracking-wider mb-2">📋 Project Overview</h4>
+            <p class="text-sm text-gray-300 leading-relaxed">${data.desc}</p>
+        </div>`;
+
+        // Scope of Work
+        html += `<div class="slide-in">
+            <h4 class="text-sm font-bold text-indigo-300 uppercase tracking-wider mb-2">🎯 Scope of Work</h4>
+            <ul class="space-y-1.5">
+                ${data.scope.map(item => `<li class="flex items-start gap-2 text-sm text-gray-300"><span class="text-green-400 mt-0.5">✓</span>${item}</li>`).join('')}
+            </ul>
+        </div>`;
+
+        // Timeline
+        html += `<div class="slide-in">
+            <h4 class="text-sm font-bold text-indigo-300 uppercase tracking-wider mb-2">📅 Timeline & Milestones</h4>
+            <div class="space-y-2">
+                ${data.timeline.map((phase, i) => `
+                    <div class="flex items-center gap-3 glass rounded-lg p-3">
+                        <div class="w-8 h-8 bg-indigo-600/20 rounded-lg flex items-center justify-center text-xs font-bold text-indigo-400">${i+1}</div>
+                        <div class="flex-1">
+                            <div class="text-sm font-medium text-gray-200">${phase.phase}</div>
+                            <div class="text-xs text-gray-500">${phase.deliverable}</div>
+                        </div>
+                        <div class="text-xs text-indigo-300 font-medium">${phase.duration}</div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>`;
+
+        // Pricing
+        html += `<div class="slide-in">
+            <h4 class="text-sm font-bold text-indigo-300 uppercase tracking-wider mb-2">💰 Investment</h4>
+            <div class="space-y-1">
+                ${data.pricing.map(item => `
+                    <div class="flex items-center justify-between py-1.5 border-b border-white/5 text-sm">
+                        <span class="text-gray-300">${item.item}</span>
+                        <span class="text-gray-200 font-medium">$${item.amount.toLocaleString()}</span>
+                    </div>
+                `).join('')}
+                ${toggleStates.rush ? `
+                    <div class="flex items-center justify-between py-1.5 border-b border-white/5 text-sm">
+                        <span class="text-yellow-400">⚡ Rush Fee (+25%)</span>
+                        <span class="text-yellow-400 font-medium">$${Math.round(subtotal * 0.25).toLocaleString()}</span>
+                    </div>
+                ` : ''}
+                <div class="flex items-center justify-between py-1.5 border-b border-white/5 text-sm">
+                    <span class="text-gray-400">Subtotal</span>
+                    <span class="text-gray-200 font-medium">$${total.toLocaleString()}</span>
+                </div>
+                <div class="flex items-center justify-between py-1.5 border-b border-white/5 text-sm">
+                    <span class="text-gray-400">HST (13%)</span>
+                    <span class="text-gray-200 font-medium">$${tax.toLocaleString()}</span>
+                </div>
+                <div class="flex items-center justify-between py-2 text-sm">
+                    <span class="text-white font-bold text-base">Total</span>
+                    <span class="text-green-400 font-bold text-lg">$${(total + tax).toLocaleString()}</span>
+                </div>
+                ${parseInt(deposit) > 0 ? `
+                    <div class="glass rounded-lg p-3 mt-2">
+                        <div class="text-xs text-indigo-300">💳 ${deposit}% deposit of <span class="font-bold">$${depositAmount.toLocaleString()}</span> due upon signing. Balance due on completion.</div>
+                    </div>
+                ` : ''}
+            </div>
+        </div>`;
+
+        // Terms
+        let terms = [
+            `<strong>Revisions:</strong> ${revisions === 'unlimited' ? 'Unlimited revisions' : revisions + ' round(s) of revisions'} included. Additional revisions at $150/hour.`,
+            `<strong>Payment:</strong> ${parseInt(deposit) > 0 ? deposit + '% deposit upfront, balance' : 'Full payment'} due within 14 days of project completion.`,
+            `<strong>Timeline:</strong> Timelines assume timely feedback from client. Delays in client response may extend the project.`,
+            `<strong>IP Transfer:</strong> All intellectual property transfers to client upon final payment.`
+        ];
+        if (toggleStates.killfee) terms.push(`<strong>Kill Fee:</strong> If the project is cancelled after kickoff, a 20% kill fee applies to cover work completed.`);
+        if (toggleStates.nda) terms.push(`<strong>NDA:</strong> Both parties agree to keep all project details, materials, and communications confidential.`);
+
+        html += `<div class="slide-in">
+            <h4 class="text-sm font-bold text-indigo-300 uppercase tracking-wider mb-2">📜 Terms & Conditions</h4>
+            <ul class="space-y-2">
+                ${terms.map(t => `<li class="text-sm text-gray-400">${t}</li>`).join('')}
+            </ul>
+        </div>`;
+
+        // About
+        html += `<div class="slide-in">
+            <h4 class="text-sm font-bold text-indigo-300 uppercase tracking-wider mb-2">👤 About</h4>
+            <p class="text-sm text-gray-400">This proposal was generated by ProposalPilot AI. In production, this section would include your bio, portfolio highlights, relevant experience, and client testimonials — automatically pulled from your profile.</p>
+        </div>`;
+
+        container.innerHTML = html;
+    }
+
+    function updateProposal() {
+        if (!proposalGenerated) return;
+        const data = projectData[currentType];
+        const content = document.getElementById('proposal-content');
+        buildProposal(data, content);
+    }
+
+    // ============ PDF DOWNLOAD ============
+    function downloadPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        const data = projectData[currentType];
+        const revisions = document.getElementById('toggle-revisions').value;
+        const deposit = document.getElementById('toggle-deposit').value;
+        let subtotal = data.pricing.reduce((sum, item) => sum + item.amount, 0);
+        let total = Math.round(subtotal * (toggleStates.rush ? 1.25 : 1));
+        let tax = Math.round(total * 0.13);
+        let y = 20;
+
+        // Header
+        doc.setFontSize(22);
+        doc.setTextColor(99, 102, 241);
+        doc.text(`${data.name} Proposal`, 20, y);
+        y += 10;
+        doc.setFontSize(11);
+        doc.setTextColor(150);
+        doc.text(`Prepared for ${data.client} | ${new Date().toLocaleDateString()}`, 20, y);
+        y += 15;
+
+        // Scope
+        doc.setFontSize(14);
+        doc.setTextColor(40);
+        doc.text('Scope of Work', 20, y);
+        y += 8;
+        doc.setFontSize(10);
+        doc.setTextColor(80);
+        data.scope.forEach(item => {
+            if (y > 270) { doc.addPage(); y = 20; }
+            doc.text(`• ${item}`, 25, y);
+            y += 6;
+        });
+        y += 5;
+
+        // Timeline
+        if (y > 240) { doc.addPage(); y = 20; }
+        doc.setFontSize(14);
+        doc.setTextColor(40);
+        doc.text('Timeline', 20, y);
+        y += 8;
+        doc.setFontSize(10);
+        doc.setTextColor(80);
+        data.timeline.forEach(phase => {
+            if (y > 270) { doc.addPage(); y = 20; }
+            doc.text(`${phase.phase} (${phase.duration}): ${phase.deliverable}`, 25, y);
+            y += 6;
+        });
+        y += 5;
+
+        // Pricing
+        if (y > 220) { doc.addPage(); y = 20; }
+        doc.setFontSize(14);
+        doc.setTextColor(40);
+        doc.text('Investment', 20, y);
+        y += 8;
+        doc.setFontSize(10);
+        data.pricing.forEach(item => {
+            if (y > 270) { doc.addPage(); y = 20; }
+            doc.setTextColor(80);
+            doc.text(item.item, 25, y);
+            doc.text(`$${item.amount.toLocaleString()}`, 170, y, { align: 'right' });
+            y += 6;
+        });
+        if (toggleStates.rush) {
+            doc.setTextColor(200, 150, 0);
+            doc.text('Rush Fee (+25%)', 25, y);
+            doc.text(`$${Math.round(subtotal * 0.25).toLocaleString()}`, 170, y, { align: 'right' });
+            y += 6;
+        }
+        y += 2;
+        doc.setDrawColor(200);
+        doc.line(25, y, 170, y);
+        y += 6;
+        doc.setTextColor(40);
+        doc.setFontSize(11);
+        doc.text('Subtotal:', 25, y);
+        doc.text(`$${total.toLocaleString()}`, 170, y, { align: 'right' });
+        y += 6;
+        doc.text('HST (13%):', 25, y);
+        doc.text(`$${tax.toLocaleString()}`, 170, y, { align: 'right' });
+        y += 6;
+        doc.setFontSize(13);
+        doc.setTextColor(34, 197, 94);
+        doc.text('Total:', 25, y);
+        doc.text(`$${(total + tax).toLocaleString()}`, 170, y, { align: 'right' });
+        y += 12;
+
+        // Footer
+        doc.setFontSize(9);
+        doc.setTextColor(180);
+        doc.text('Generated by ProposalPilot — proposalpilot.ai', 105, 285, { align: 'center' });
+
+        doc.save(`Proposal-${data.client.replace(/\s+/g, '-')}.pdf`);
+    }
+
+    // ============ COPY PROPOSAL ============
+    function copyProposal() {
+        const text = document.getElementById('proposal-content').innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            const btn = event.target;
+            btn.textContent = '✅ Copied!';
+            setTimeout(() => btn.textContent = '📋 Copy', 2000);
+        });
+    }
+
+    // ============ AI PRICING ============
+    function suggestPricing() {
+        const input = document.getElementById('pricing-input').value.trim();
+        if (!input) { document.getElementById('pricing-input').focus(); return; }
+
+        const result = document.getElementById('pricing-result');
+        result.classList.remove('hidden');
+
+        // Simple heuristic pricing based on keywords
+        let base = 5000;
+        const lower = input.toLowerCase();
+        if (lower.includes('website') || lower.includes('web')) base = 5500;
+        if (lower.includes('app') || lower.includes('mobile')) base = 12000;
+        if (lower.includes('logo') || lower.includes('brand')) base = 4000;
+        if (lower.includes('video') || lower.includes('film')) base = 8000;
+        if (lower.includes('marketing') || lower.includes('campaign')) base = 7500;
+        if (lower.includes('consulting') || lower.includes('strategy')) base = 15000;
+        if (lower.includes('ecommerce') || lower.includes('e-commerce') || lower.includes('store')) base += 3000;
+        if (lower.includes('redesign')) base *= 0.8;
+        if (lower.includes('simple') || lower.includes('basic')) base *= 0.6;
+        if (lower.includes('complex') || lower.includes('enterprise')) base *= 2;
+        if (lower.includes('page') && lower.match(/\d+/)) {
+            const pages = parseInt(lower.match(/\d+/)[0]);
+            if (pages > 10) base *= 1.5;
+        }
+
+        const low = Math.round(base * 0.6 / 100) * 100;
+        const market = Math.round(base / 100) * 100;
+        const premium = Math.round(base * 1.6 / 100) * 100;
+
+        document.getElementById('price-low').textContent = `$${low.toLocaleString()}`;
+        document.getElementById('price-market').textContent = `$${market.toLocaleString()}`;
+        document.getElementById('price-premium').textContent = `$${premium.toLocaleString()}`;
+
+        const insights = document.getElementById('pricing-insights');
+        insights.innerHTML = `
+            <p>• <strong>Market rate</strong> for this type of project: $${market.toLocaleString()} based on 2024-2025 freelancer rate surveys</p>
+            <p>• <strong>Budget-friendly</strong> at $${low.toLocaleString()} may attract price-sensitive clients but signals lower expertise</p>
+            <p>• <strong>Premium pricing</strong> at $${premium.toLocaleString()} positions you as a specialist — back it up with a strong portfolio</p>
+            <p>• 💡 <strong>Tip:</strong> Projects with clear scope and fixed deliverables convert better with flat-rate pricing. Use hourly for open-ended consulting.</p>
+        `;
+    }
+
+    // ============ WAITLIST ============
+    function joinWaitlist() {
+        const email = document.getElementById('waitlist-email').value.trim();
+        const msg = document.getElementById('waitlist-msg');
+        if (!email || !email.includes('@')) {
+            msg.textContent = 'Please enter a valid email address.';
+            msg.className = 'mt-3 text-sm text-red-400';
+            msg.classList.remove('hidden');
+            return;
+        }
+        let waitlist = JSON.parse(localStorage.getItem('pp_waitlist') || '[]');
+        if (waitlist.includes(email)) {
+            msg.textContent = "You're already on the waitlist! 🎉";
+            msg.className = 'mt-3 text-sm text-yellow-400';
+            msg.classList.remove('hidden');
+            return;
+        }
+        waitlist.push(email);
+        localStorage.setItem('pp_waitlist', JSON.stringify(waitlist));
+        msg.textContent = "You're in! We'll notify you when ProposalPilot launches. 🚀";
+        msg.className = 'mt-3 text-sm text-green-400';
+        msg.classList.remove('hidden');
+        document.getElementById('waitlist-email').value = '';
+        updateWaitlistCount();
+    }
+
+    function updateWaitlistCount() {
+        const waitlist = JSON.parse(localStorage.getItem('pp_waitlist') || '[]');
+        const base = 47; // seed number
+        document.getElementById('waitlist-count').textContent = base + waitlist.length;
+    }
+
+    // ============ INIT ============
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('project-desc').value = projectData.webdev.desc;
+        updateWaitlistCount();
+    });
+    </script>
+</body>
+</html>
